@@ -97,7 +97,8 @@ namespace H3_Logo_Replacer
                             if (mask <= 1)
                             {
                                 int addr = y * 16 + (x / 8) + start;
-                                firmware[addr] = (byte)byt;
+                                if (addr < firmware.Length)
+                                    firmware[addr] = (byte)byt;
                                 byt = 0;
                             }
                         }
