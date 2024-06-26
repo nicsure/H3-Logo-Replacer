@@ -2,12 +2,12 @@ using System.Diagnostics.Contracts;
 
 namespace H3_Logo_Replacer
 {
-    public partial class Form1 : Form
+    public partial class UI : Form
     {
         private byte[] firmware = [];
         private Bitmap? newLogo = null;
 
-        public Form1()
+        public UI()
         {
             InitializeComponent();
         }
@@ -39,7 +39,8 @@ namespace H3_Logo_Replacer
                         firmware = temp;
                 }
                 newLogo = null;
-                Contrast.Enabled = false;
+                Contrast.Enabled = Invert.Enabled = false;
+                Invert.Checked = false;
             }
             bool loaded = firmware.Length > 0;
             SaveFW.Enabled =
@@ -77,6 +78,7 @@ namespace H3_Logo_Replacer
         {
             int start = (int)Offset.Value;
             int contrast = Contrast.Value;
+            bool invert = Invert.Checked;
             int byt = 0;
             for (int y = 0; y < 60; y++)
             {
@@ -88,7 +90,8 @@ namespace H3_Logo_Replacer
                             bm.GetPixel(x, y) :
                             Color.Black;
                     int cc = c.R + c.G + c.B;
-                    if (cc > contrast) byt |= mask;
+                    if ((invert && cc < contrast) || (!invert && cc > contrast))
+                        byt |= mask;
                     if (mask <= 1)
                     {
                         int addr = y * 16 + (x / 8) + start;
@@ -115,7 +118,7 @@ namespace H3_Logo_Replacer
                 if (image != null)
                 {
                     newLogo = (Bitmap)image;
-                    Contrast.Enabled = true;
+                    Contrast.Enabled = Invert.Enabled = true;
                     ApplyBitmap(newLogo);
                 }
                 else
@@ -145,7 +148,13 @@ namespace H3_Logo_Replacer
 
         private void Contrast_Scroll(object sender, EventArgs e)
         {
-            if(newLogo != null)
+            if (newLogo != null)
+                ApplyBitmap(newLogo);
+        }
+
+        private void Invert_Click(object sender, EventArgs e)
+        {
+            if (newLogo != null)
                 ApplyBitmap(newLogo);
         }
     }
