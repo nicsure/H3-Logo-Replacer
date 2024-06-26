@@ -28,9 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI));
             tableLayoutPanel1 = new TableLayoutPanel();
             Preview = new PictureBox();
+            PreviewMenu = new ContextMenuStrip(components);
+            SaveImageMenu = new ToolStripMenuItem();
             Offset = new NumericUpDown();
             label1 = new Label();
             LoadFW = new Button();
@@ -42,6 +45,7 @@
             Invert = new CheckBox();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)Preview).BeginInit();
+            PreviewMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)Offset).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Contrast).BeginInit();
             tableLayoutPanel2.SuspendLayout();
@@ -79,6 +83,7 @@
             // 
             Preview.BackColor = SystemColors.ButtonShadow;
             Preview.BackgroundImageLayout = ImageLayout.Zoom;
+            Preview.ContextMenuStrip = PreviewMenu;
             Preview.Dock = DockStyle.Fill;
             Preview.Location = new Point(10, 10);
             Preview.Margin = new Padding(10);
@@ -87,6 +92,20 @@
             Preview.Size = new Size(780, 380);
             Preview.TabIndex = 0;
             Preview.TabStop = false;
+            // 
+            // PreviewMenu
+            // 
+            PreviewMenu.ImageScalingSize = new Size(24, 24);
+            PreviewMenu.Items.AddRange(new ToolStripItem[] { SaveImageMenu });
+            PreviewMenu.Name = "PreviewMenu";
+            PreviewMenu.Size = new Size(177, 36);
+            // 
+            // SaveImageMenu
+            // 
+            SaveImageMenu.Name = "SaveImageMenu";
+            SaveImageMenu.Size = new Size(176, 32);
+            SaveImageMenu.Text = "Save Image";
+            SaveImageMenu.Click += SaveImageMenu_Click;
             // 
             // Offset
             // 
@@ -222,6 +241,7 @@
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)Preview).EndInit();
+            PreviewMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)Offset).EndInit();
             ((System.ComponentModel.ISupportInitialize)Contrast).EndInit();
             tableLayoutPanel2.ResumeLayout(false);
@@ -243,5 +263,7 @@
         private TableLayoutPanel tableLayoutPanel2;
         private Label label2;
         private CheckBox Invert;
+        private ContextMenuStrip PreviewMenu;
+        private ToolStripMenuItem SaveImageMenu;
     }
 }

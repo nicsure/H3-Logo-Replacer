@@ -157,5 +157,38 @@ namespace H3_Logo_Replacer
             if (newLogo != null)
                 ApplyBitmap(newLogo);
         }
+
+        private void SaveCurrentImage()
+        {
+            if (Preview.BackgroundImage != null)
+            {
+                SaveFileDialog sfd = new()
+                {
+                    Title = "Save Current Image",
+                    Filter = "PNG Files|*.png"
+                };
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        Preview.BackgroundImage.Save(sfd.FileName);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Cannot save image. File system error.");
+                    }
+                }
+            }
+        }
+
+        private void Preview_Click(object sender, EventArgs e)
+        {
+            SaveCurrentImage();
+        }
+
+        private void SaveImageMenu_Click(object sender, EventArgs e)
+        {
+            SaveCurrentImage();
+        }
     }
 }
