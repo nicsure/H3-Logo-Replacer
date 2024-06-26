@@ -12,4 +12,5 @@ Click 'Load Image' and select the image you created.
 - A preview of the updated image will now be displayed.  
   
 Click 'Save Firmware' and save the firmware with the updated logo to another file.  
+
 Flash the updated file you saved to radio.  
