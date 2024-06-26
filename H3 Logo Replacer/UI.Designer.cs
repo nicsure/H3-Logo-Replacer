@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI));
             tableLayoutPanel1 = new TableLayoutPanel();
             Preview = new PictureBox();
             Offset = new NumericUpDown();
@@ -215,6 +216,7 @@
             BackColor = SystemColors.GradientActiveCaption;
             ClientSize = new Size(1201, 483);
             Controls.Add(tableLayoutPanel1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "UI";
             Text = "H3 Logo Changer v1.1";
             tableLayoutPanel1.ResumeLayout(false);
