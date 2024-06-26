@@ -1,8 +1,12 @@
+using System.Diagnostics.Contracts;
+
 namespace H3_Logo_Replacer
 {
     public partial class Form1 : Form
     {
         private byte[] firmware = [];
+        private Bitmap? newLogo = null;
+
         public Form1()
         {
             InitializeComponent();
@@ -34,6 +38,8 @@ namespace H3_Logo_Replacer
                     else
                         firmware = temp;
                 }
+                newLogo = null;
+                Contrast.Enabled = false;
             }
             bool loaded = firmware.Length > 0;
             SaveFW.Enabled =
@@ -67,6 +73,34 @@ namespace H3_Logo_Replacer
             Preview.BackgroundImage = bm;
         }
 
+        private void ApplyBitmap(Bitmap bm)
+        {
+            int start = (int)Offset.Value;
+            int contrast = Contrast.Value;
+            int byt = 0;
+            for (int y = 0; y < 60; y++)
+            {
+                for (int x = 0; x < 128; x++)
+                {
+                    int mask = 1 << (7 - (x % 8));
+                    Color c =
+                        y < bm.Height && x < bm.Width ?
+                            bm.GetPixel(x, y) :
+                            Color.Black;
+                    int cc = c.R + c.G + c.B;
+                    if (cc > contrast) byt |= mask;
+                    if (mask <= 1)
+                    {
+                        int addr = y * 16 + (x / 8) + start;
+                        if (addr < firmware.Length)
+                            firmware[addr] = (byte)byt;
+                        byt = 0;
+                    }
+                }
+            }
+            DisplayFWImage();
+        }
+
         private void LoadIM_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new()
@@ -76,34 +110,13 @@ namespace H3_Logo_Replacer
             };
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                int start = (int)Offset.Value;
                 Image? image;
                 try { image = Image.FromFile(ofd.FileName); } catch { image = null; }
                 if (image != null)
                 {
-                    Bitmap loaded = (Bitmap)image;
-                    int byt = 0;
-                    for (int y = 0; y < 60; y++)
-                    {
-                        for (int x = 0; x < 128; x++)
-                        {
-                            int mask = 1 << (7 - (x % 8));
-                            Color c =
-                                y < loaded.Height && x < loaded.Width ?
-                                    loaded.GetPixel(x, y) :
-                                    Color.Black;
-                            int cc = c.R + c.G + c.B;
-                            if (cc > 382) byt |= mask;
-                            if (mask <= 1)
-                            {
-                                int addr = y * 16 + (x / 8) + start;
-                                if (addr < firmware.Length)
-                                    firmware[addr] = (byte)byt;
-                                byt = 0;
-                            }
-                        }
-                    }
-                    DisplayFWImage();
+                    newLogo = (Bitmap)image;
+                    Contrast.Enabled = true;
+                    ApplyBitmap(newLogo);
                 }
                 else
                     MessageBox.Show("Cannot load that image. File system error or invalid format.");
@@ -117,7 +130,7 @@ namespace H3_Logo_Replacer
                 Title = "Save modified firmware binary",
                 Filter = "BIN Files|*.bin"
             };
-            if(sfd.ShowDialog() == DialogResult.OK)
+            if (sfd.ShowDialog() == DialogResult.OK)
             {
                 try
                 {
@@ -128,6 +141,12 @@ namespace H3_Logo_Replacer
                     MessageBox.Show("Cannot save firmware. File system error.");
                 }
             }
+        }
+
+        private void Contrast_Scroll(object sender, EventArgs e)
+        {
+            if(newLogo != null)
+                ApplyBitmap(newLogo);
         }
     }
 }
