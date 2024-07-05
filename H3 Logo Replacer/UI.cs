@@ -201,10 +201,10 @@ namespace H3_Logo_Replacer
                 if (cdg.ShowDialog() == DialogResult.OK)
                 {
                     FreqPreview.ForeColor = cdg.Color;
-                    int r = cdg.Color.R >> 2;
-                    int g = cdg.Color.G >> 3;
-                    int b = cdg.Color.B >> 3;
-                    int rgb = (r << 10) | (b << 5) | g;
+                    int r = cdg.Color.R >> 4;
+                    int g = cdg.Color.G >> 4;
+                    int b = cdg.Color.B >> 4;
+                    int rgb = 0xf000 | (r << 8) | (b << 4) | g;
                     byte ch = (byte)(rgb >> 8);
                     byte cl = (byte)(rgb & 0xff);
                     firmware[(int)ColorHighOffset.Value] = ch;
