@@ -39,10 +39,12 @@ namespace H3_Logo_Replacer
                         firmware = temp;
                 }
                 newLogo = null;
-                Contrast.Enabled = Invert.Enabled = false;
+                Contrast.Enabled = 
+                Invert.Enabled = 
                 Invert.Checked = false;
             }
             bool loaded = firmware.Length > 0;
+            FreqPreview.Enabled =
             SaveFW.Enabled =
             LoadIM.Enabled =
             Offset.Enabled = loaded;
@@ -189,6 +191,29 @@ namespace H3_Logo_Replacer
         private void SaveImageMenu_Click(object sender, EventArgs e)
         {
             SaveCurrentImage();
+        }
+
+        private void FreqPreview_Click(object sender, EventArgs e)
+        {
+            if (firmware.Length > 0)
+            {
+                ColorDialog cdg = new();
+                if (cdg.ShowDialog() == DialogResult.OK)
+                {
+                    FreqPreview.ForeColor = cdg.Color;
+                    int r = cdg.Color.R >> 2;
+                    int g = cdg.Color.G >> 3;
+                    int b = cdg.Color.B >> 3;
+                    int rgb = (r << 10) | (b << 5) | g;
+                    byte ch = (byte)(rgb >> 8);
+                    byte cl = (byte)(rgb & 0xff);
+                    firmware[(int)ColorHighOffset.Value] = ch;
+                    firmware[(int)ColorLowOffset.Value] = cl;
+                    firmware[(int)WhiteNopOffset.Value] = 0;
+                    firmware[(int)WhiteNopOffset.Value + 1] = 0;
+                    firmware[(int)WhiteNopOffset.Value + 2] = 0;
+                }
+            }
         }
     }
 }
