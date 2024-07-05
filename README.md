@@ -13,4 +13,9 @@ Click 'Load Image' and select the image you created.
   
 Click 'Save Firmware' and save the firmware with the updated logo to another file.  
 
+
+Click on the black frequency preview window to change the colour of the large frequency display.
+
+
+
 Flash the updated file you saved to radio.  
