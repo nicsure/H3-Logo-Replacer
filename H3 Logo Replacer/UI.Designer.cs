@@ -342,7 +342,7 @@
             Controls.Add(tableLayoutPanel1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "UI";
-            Text = "H3 Logo Changer v1.2";
+            Text = "H3 Logo Changer v1.2.1";
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)WhiteNopOffset).EndInit();
