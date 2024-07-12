@@ -5,7 +5,7 @@ Create an image of size 128x60 pixels.
 Open the H3 Logo Replacer app.  
   
 Click 'Load Firmware' and select a firmware image  
-- (the offseta are correct for 240702 but may need adjusting for other versions).  
+- (the offsets are correct for 240702 but may need adjusting for other versions).  
 - A preview of the image in the firmware you loaded will now be displayed.  
   
 Click 'Load Image' and select the image you created.  
