@@ -1,4 +1,6 @@
 # TD-H3 Logo Replacer  
+
+!ONLY WORKS WITH STOCK FIRMWARE!
   
 Create an image of size 128x60 pixels.  
   
